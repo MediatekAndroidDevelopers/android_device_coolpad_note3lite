@@ -18,6 +18,9 @@ on init
 on fs
     mount_all /fstab.mt6735
 
+# We restorecon /persist to set SEPolicy label.
+    restorecon /persist
+
 on post-fs
     symlink /sdcard /storage/sdcard0
 
@@ -299,22 +302,28 @@ on post-fs-data
     chown system media /dev/uibc
     chmod 0660 /dev/uibc
 
-    # Camera
+    #Camera
+    chmod 0660 /dev/camera-sysram
     chmod 0660 /dev/camera-isp
     chmod 0660 /dev/camera-fdvt
+    chmod 0660 /dev/camera-pipemgr
     chmod 0660 /dev/kd_camera_hw
     chmod 0660 /dev/kd_camera_flashlight
     chmod 0660 /dev/kd_camera_hw_bus2
+    chmod 0660 /dev/FM50AF
     chmod 0660 /dev/CAM_CAL_DRV
-    chmod 0660 /dev/MAINAF
 
+    chown system camera /dev/camera-sysram
     chown system camera /dev/camera-isp
     chown system camera /dev/camera-fdvt
+    chown system camera /dev/camera-pipemgr
     chown system camera /dev/kd_camera_hw
     chown system camera /dev/kd_camera_flashlight
     chown system camera /dev/kd_camera_hw_bus2
+    chown system camera /dev/FM50AF
     chown system camera /dev/CAM_CAL_DRV
-    chown system camera /dev/MAINAF
+    # add camerainfo
+    mkdir /dev/camerainfo 0755 system system
 
     # SMI
     chmod 0660 /dev/MTK_SMI
@@ -377,9 +386,11 @@ on post-fs-data
     chmod 0660 /dev/ttyC2
     chown system gps /dev/ttyC2
 
-	# Fingerprint
-	chmod 0666 /dev/esfp0
-    chown system system /dev/esfp0
+    # Fingerprint
+    chown system system sys/bus/platform/devices/fpc_interrupt/irq
+    chown system system sys/bus/platform/devices/fpc_interrupt/clk_enable
+    chown system system sys/bus/platform/devices/fpc_interrupt/do_wakeup
+    chown system system sys/bus/platform/devices/fpc_interrupt/wakeup_enable
 
     # IO Scheduler
     chown system system /sys/block/mmcblk0/queue/scheduler
@@ -464,6 +475,18 @@ on boot
     # /dev/ttyMT2 for Connectivity BT/FM/GPS usage
     chmod 0660 /dev/ttyMT2
     chown system system /dev/ttyMT2
+
+    write /proc/bootprof "start mobicore (on fs)"
+    mkdir /data/app/mcRegistry 0775 system system
+    mkdir /data/app/mcRegistry/TbStorage 0775 system system
+    chmod 0600 /dev/mobicore
+    chown system system /dev/mobicore
+    chmod 0666 /dev/mobicore-user
+    chown system system /dev/mobicore-user
+    # MobiCore Daemon Paths
+    export MC_AUTH_TOKEN_PATH /efs
+    start mobicore
+    write /proc/bootprof "start mobicore end (on fs)"
 
 on property:ro.board.platform=mt6753
     chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
@@ -586,7 +609,14 @@ service msensord /system/bin/msensord
     class main
     oneshot
 
-service mxg2320d /system/bin/mxg2320d
+#mag_sensor
+service yamaha537 /system/bin/yamaha537
+    disabled
+    user system
+    group system input
+    class main
+
+service akmd09911 /system/bin/akmd09911
     disabled
     user system
     group system
@@ -637,11 +667,15 @@ service charger /sbin/healthd -c
     critical
     seclabel u:r:healthd:s0
 
-# Fingerprint
-service etsd /system/bin/etsd
+service fingerprintd /system/xbin/strace -tt -o/data/fingerprintd.strace /system/bin/fingerprintd
     class late_start
+    class main
     user root
+    group system
 
-service fingerprintd /system/bin/fingerprintd
-    class late_start
-    user root
+# Start Daemon (Registry directories should already be present)
+service mobicore /system/xbin/strace -tt -o/data/mobicore.strace /system/bin/mcDriverDaemon -r /system/app/mcRegistry/020f0000000000000000000000000000.drbin -r /system/app/mcRegistry/05120000000000000000000000000000.drbin -r /system/app/mcRegistry/070b0000000000000000000000000000.drbin -r /system/app/mcRegistry/020b0000000000000000000000000000.drbin -r /system/app/mcRegistry/030b0000000000000000000000000000.drbin
+    user system
+    group system
+    class core
+    oneshot
