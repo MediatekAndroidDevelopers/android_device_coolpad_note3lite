@@ -16,6 +16,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     lights.mt6753
 
+PRODUCT_PACKAGES += \
+    fingerprint.default
+
 # Audio
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio/audio_device.xml:system/etc/audio_device.xml \
