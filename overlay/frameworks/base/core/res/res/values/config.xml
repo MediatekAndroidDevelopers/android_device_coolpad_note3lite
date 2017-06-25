@@ -119,4 +119,7 @@
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
     <integer name="config_deviceHardwareKeys">83</integer>
+
+    <!-- Is the device capable of fingerprint actions -->
+    <bool name="config_fingerprintActions">true</bool>
 </resources>
