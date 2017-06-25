@@ -18,9 +18,6 @@ on init
 on fs
     mount_all /fstab.mt6735
 
-# We restorecon /persist to set SEPolicy label.
-    restorecon /persist
-
 on post-fs
     symlink /sdcard /storage/sdcard0
 
@@ -405,7 +402,8 @@ on post-fs-data
     chown system system /sys/bus/platform/drivers/gyroscope/gyro_orientation
 
     # Smartwake
-    chown system system /sys/android_touch/gesture
+    chown system system /sys/devices/virtual/touchscreen/touchscreen_dev/smartwake
+    chown system system /sys/devices/virtual/touchscreen/touchscreen_dev/gesture_wakeup
 
 on boot
     write /proc/sys/vm/dirty_writeback_centisecs 300
@@ -486,6 +484,8 @@ on boot
     export MC_AUTH_TOKEN_PATH /efs
     start mobicore
     write /proc/bootprof "start mobicore end (on fs)"
+# We restorecon /persist to set SEPolicy label.
+    restorecon /persist
 
 on property:ro.board.platform=mt6753
     chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
@@ -666,14 +666,13 @@ service charger /sbin/healthd -c
     critical
     seclabel u:r:healthd:s0
 
-service fingerprintd /system/xbin/strace -tt -o/data/fingerprintd.strace /system/bin/fingerprintd
+service fingerprintd /system/bin/fingerprintd
     class late_start
     class main
-    user root
-    group system
+    user system
 
 # Start Daemon (Registry directories should already be present)
-service mobicore /system/xbin/strace -tt -o/data/mobicore.strace /system/bin/mcDriverDaemon -r /system/app/mcRegistry/020f0000000000000000000000000000.drbin -r /system/app/mcRegistry/05120000000000000000000000000000.drbin -r /system/app/mcRegistry/070b0000000000000000000000000000.drbin -r /system/app/mcRegistry/020b0000000000000000000000000000.drbin -r /system/app/mcRegistry/030b0000000000000000000000000000.drbin
+service mobicore /system/bin/mcDriverDaemon -r /system/app/mcRegistry/020f0000000000000000000000000000.drbin -r /system/app/mcRegistry/05120000000000000000000000000000.drbin -r /system/app/mcRegistry/070b0000000000000000000000000000.drbin -r /system/app/mcRegistry/020b0000000000000000000000000000.drbin -r /system/app/mcRegistry/030b0000000000000000000000000000.drbin
     user system
     group system
     class core

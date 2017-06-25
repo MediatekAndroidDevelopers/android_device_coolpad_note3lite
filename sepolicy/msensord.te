@@ -1,0 +1,1 @@
+allow msensord ctl_yamaha537_prop:property_service set;

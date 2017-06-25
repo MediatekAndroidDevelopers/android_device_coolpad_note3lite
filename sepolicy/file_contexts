@@ -1,8 +1,19 @@
 # smartwake
-/sys/android_touch/gesture           	u:object_r:smartwake_sysfs:s0
+/sys/devices/virtual/touchscreen/touchscreen_dev/smartwake          	u:object_r:smartwake_sysfs:s0
+/sys/devices/virtual/touchscreen/touchscreen_dev/gesture_wakeup   	u:object_r:smartwake_sysfs:s0
 
 # fingerprint
-/dev/fpc1020            		u:object_r:fpc1020_device:s0
+/dev/fpc1020            						u:object_r:fpc1020_device:s0
 
 # camera
-/dev/T2_CAM_CAL_DRV(/.*)? 		u:object_r:camera_device:s0
+/dev/T2_CAM_CAL_DRV(/.*)? 						u:object_r:camera_device:s0
+
+# mobicore/fingerprint
+/data/app/mcRegistry(/.*)? 						u:object_r:mobicore_data_file:s0
+/system/app/mcRegistry(/.*)? 						u:object_r:mobicore_data_file:s0
+/dev/mobicore 								u:object_r:mobicore_admin_device:s0
+/dev/mobicore-user 							u:object_r:mobicore_user_device:s0
+/system/bin/mcDriverDaemon                                      	u:object_r:mobicore_exec:s0
+
+# magsensor
+/system/bin/yamaha537                                           	u:object_r:yamaha537_exec:s0

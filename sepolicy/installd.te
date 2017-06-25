@@ -1,0 +1,2 @@
+allow installd mobicore_data_file:dir rw_dir_perms;
+allow installd mobicore_data_file:dir rmdir;
