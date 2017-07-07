@@ -1,4 +1,4 @@
-LOCAL_PATH := device/coolpad/note3
+LOCAL_PATH := device/coolpad/note3lite
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
@@ -7,7 +7,7 @@ PRODUCT_AAPT_CONFIG := normal xhdpi xxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
 # Recovery allowed devices
-TARGET_OTA_ASSERT_DEVICE := note3,CP8676_I02
+TARGET_OTA_ASSERT_DEVICE := note3lite,CP8298_I00
 
 PRODUCT_PACKAGES += \
     libstlport
@@ -69,3 +69,4 @@ $(call inherit-product, vendor/mad/config/common.mk)
 
 # Vendor
 $(call inherit-product, vendor/coolpad/note3/note3-vendor.mk)
+$(call inherit-product, vendor/coolpad/note3/note3lite-firmware-blobs.mk)

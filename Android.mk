@@ -1,6 +1,6 @@
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),note3)
+ifeq ($(TARGET_DEVICE),note3lite)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
 

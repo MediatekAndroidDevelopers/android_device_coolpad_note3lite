@@ -1,5 +1,5 @@
 # mt6753 platform boardconfig
-LOCAL_PATH := device/coolpad/note3
+LOCAL_PATH := device/coolpad/note3lite
 
 include vendor/mad/config/board.mk
 
@@ -39,7 +39,7 @@ BOARD_MKBOOTIMG_ARGS := --base 0x40078000 --pagesize 2048 --kernel_offset 0x0000
 TARGET_KERNEL_SOURCE := kernel/coolpad/note3
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_CONFIG := cp_n3_defconfig
+TARGET_KERNEL_CONFIG := cp_n3lite_defconfig
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 MTK_APPENDED_DTB_SUPPORT := yes
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb

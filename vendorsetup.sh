@@ -1,3 +1,3 @@
-add_lunch_combo full_note3-user
-add_lunch_combo full_note3-userdebug
-add_lunch_combo full_note3-eng
+add_lunch_combo full_note3lite-user
+add_lunch_combo full_note3lite-userdebug
+add_lunch_combo full_note3lite-eng
