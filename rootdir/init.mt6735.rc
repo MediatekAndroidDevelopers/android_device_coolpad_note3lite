@@ -72,6 +72,9 @@ on post-fs-data
     # NFC
     mkdir /data/nfc_socket 0771 nfc radio
 
+    # fingerprint
+    mkdir /data/fpc 0771 system system
+
     # md32 boot
     chown root system /dev/md32
     chmod 0440 /dev/md32
