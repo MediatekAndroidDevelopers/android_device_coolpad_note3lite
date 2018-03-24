@@ -34,7 +34,12 @@
 /dev/kd_camera_flashlight 0660   system	    camera
 /dev/kd_camera_hw_bus2    0660   system	    camera
 /dev/CAM_CAL_DRV          0660   system	    camera
+/dev/T2_CAM_CAL_DRV       0660   system	    camera
 /dev/MAINAF               0660   system	    camera
+
+# Fingerprint
+/dev/mobicore 		0600 	system 	    system
+/dev/mobicore-user 	0660 	system      system
 
 # Sensor
 /dev/hwmsensor            0660   system	    nvram
@@ -96,6 +101,3 @@
 
 # Sched 
 /dev/mtk_sched            0660   system     media
-
-# Fingerprint
-/dev/esfp0                0660   system     system
